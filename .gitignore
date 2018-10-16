@@ -2,6 +2,7 @@
 *~
 __pycache__
 myvenv
+temp
 .idea
 db.sqlite3
 /static

@@ -1,7 +1,13 @@
 import os
 from webuntis.models import Room
+from webuntis.models import Event
 import requests
 from icalendar import Calendar
+
+"""
+Dieses Scipt führt man am besten über die Konsole aus.
+    python manage.py runscript loadical
+"""
 
 
 def run():
@@ -17,7 +23,7 @@ def run():
         print('URL: ' + address)
         print('Erzeuge Cache Datei: ' + myfile)
         downloadical(address, myfile)
-        readical(myfile)
+        readical(myfile, r1)
         deletefile(myfile)
 
     else:
@@ -54,7 +60,7 @@ def deletefile(filename):
         print("Error: %s - %s." % (e.filename, e.strerror))
 
 
-def readical(filename):
+def readical(filename, room):
     temp_dir = os.path.dirname(os.path.dirname(__file__))
     temp_dir = os.path.join(temp_dir, "webuntis", "temp")
     file_path = os.path.join(temp_dir, filename)
@@ -63,17 +69,43 @@ def readical(filename):
     gcal = Calendar.from_ical(icsfile.read())
 
     for event in gcal.walk('vevent'):
-        start = event.get('dtstart')
+        start = event.get('dtstart').dt
         summary = event.get('summary')
-        end = event.get('dtend')
-        timestamp = event.get('dtstamp')
+        end = event.get('dtend').dt
+        # timestamp = event.get('dtstamp').dt
 
-        print(start.dt)
+        print(start)
         print(summary)
-        print(end.dt)
-        print(timestamp.dt)
+        print(end)
+        # print(timestamp)
+        # print(' ')
+        eventexist = searchevents(room, start, end, summary)
+        if eventexist:
+            eventsave(room, start, end, summary)
+
         print(' ')
 
     icsfile.close()
+
+
+def searchevents(room, start, end, summary):
+    query = Event.objects.filter(room=room,
+                                 summary__exact=summary,
+                                 dtstart__exact=start,
+                                 dtend__exact=end)
+
+    if not query:
+        print('Eintrag muss erstellt werden')
+        return True
+    else:
+        print('Eintrag existiert bereits')
+        return False
+
+
+def eventsave(room, start, end, summary):
+    act = Event(dtstart=start, dtend=end, summary=summary, room=room)
+    act.save()
+    print('neues Event wurde angelegt')
+
 
 

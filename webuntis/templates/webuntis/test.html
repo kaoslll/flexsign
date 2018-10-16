@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Test page</title>
+</head>
+<body>
+    <div>
+        <h1><a href="/">Test Page</a></h1>
+    </div>
+
+{% for roomelem in rooms %}
+    <div>
+        <p> Raum: {{ roomelem.name }}</p>
+        <p> URL: {{ roomelem.url }}</p>
+    </div>
+{% endfor %}
+</body>
+</html>

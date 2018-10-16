@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 
 """
 Class Room
@@ -26,7 +25,7 @@ class Event(models.Model):
     dtend = models.DateTimeField("Endzeit")
     summary = models.CharField("Kalendereintrag", max_length=250)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    dtcreated = models.DateTimeField(default=timezone.now())
+    dtcreated = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.summary

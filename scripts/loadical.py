@@ -68,6 +68,8 @@ def readical(filename, room):
     icsfile = open(file_path, 'rb')
     gcal = Calendar.from_ical(icsfile.read())
 
+    time_last_change = None
+
     for event in gcal.walk('vevent'):
         start = event.get('dtstart').dt
         summary = event.get('summary')
@@ -79,11 +81,25 @@ def readical(filename, room):
         print(end)
         # print(timestamp)
         # print(' ')
-        eventexist = searchevents(room, start, end, summary)
-        if eventexist:
-            eventsave(room, start, end, summary)
+
+        eventcreate = searchevents(room, start, end, summary)
+
+        """
+        Hier muss jetzt eine geschickte Abfrage rein ob sich ein Termin geändert hat:
+            -> Wenn sich einer geändert hat, lösche alle zu Raum dazugehörigen Events und Speichere die Neuen.
+            -> Ein selectives Update ist leider bei flexiblen Zeiten nicht möglich.
+                -> Es besteht lediglich die Möglichkeit die alten Events zu sichern, wobei das wenig Sinn macht.
+        """
+
+        if eventcreate:
+            time_last_change = eventsave(room, start, end, summary)
 
         print(' ')
+
+    if time_last_change:
+        print('speichere Eintrag in Raum')
+        room.dtchanged = time_last_change
+        room.save()
 
     icsfile.close()
 
@@ -106,6 +122,7 @@ def eventsave(room, start, end, summary):
     act = Event(dtstart=start, dtend=end, summary=summary, room=room)
     act.save()
     print('neues Event wurde angelegt')
+    return getattr(act, 'dtcreated')
 
 
 

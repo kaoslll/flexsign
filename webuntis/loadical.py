@@ -1,14 +1,14 @@
 import requests
 import os
 
-address = 'https://www.oth-regensburg.de/typo3conf/ext/hsregensburg/Resources/Public/Images/oth-regensburg-logo.jpg'
-file = 'logo.jpg'
+address = 'https://kephiso.webuntis.com/WebUntis/Ical.do?elemType=4&elemId=200&rpt_sd=2018-10-15'
+file = 'S042.ics'
 
 
 def downloadical(url, filename):
     print('Beginning file download...')
-
-    r = requests.get(url)
+    cookie = {'schoolname': '_b3RoLXJlZ2Vuc2J1cmc='}
+    r = requests.get(url, cookies=cookie)
 
     with open('temp/' + filename, 'wb') as f:
         f.write(r.content)

@@ -3,12 +3,17 @@ from webuntis.models import Room
 from webuntis.models import Event
 import requests
 from icalendar import Calendar
+from django.utils import timezone
+
 
 """
 Dieses Scipt führt man am besten über die Konsole aus.
     python manage.py runscript loadical
 """
 
+
+# TODO: Implementierung direkt im Hauptprojekt
+# TODO: Komplett eine Klasse erzeugen
 
 class Icalevent:
     def __init__(self, dtstart, dtend, dtsummary):
@@ -27,7 +32,6 @@ def run():
         print('Raum ' + myroom + ' gefunden!')
         address = getattr(r1, 'url')
         myfile = getattr(r1, 'name') + '.ics'
-        print('URL: ' + address)
         print('Erzeuge Cache Datei: ' + myfile)
         downloadical(address, myfile)
         readical(myfile, r1)
@@ -38,10 +42,25 @@ def run():
         print('Abbruch!')
 
 
+def add_date_in_url(url):
+    y = get_date_of_this_monday()
+    url = url + '&rpt_sd=' + y.strftime('%Y-%m-%d')
+    print(url)
+    return url
+
+
+# TODO: test this function whith all Days of a Week!
+def get_date_of_this_monday():
+    return timezone.now() - timezone.timedelta(timezone.now().isoweekday() % 7) + timezone.timedelta(1)
+
+
 def downloadical(url, filename):
     print('Beginning file download...')
+    url = add_date_in_url(url)
     cookie = {'schoolname': '_b3RoLXJlZ2Vuc2J1cmc='}
     r = requests.get(url, cookies=cookie)
+
+    # TODO: Errorhandling wenn keine ICal Datei
 
     temp_dir = os.path.dirname(os.path.dirname(__file__))
     temp_dir = os.path.join(temp_dir, "webuntis", "temp")
@@ -102,6 +121,8 @@ def readical(filename, room):
     # Wenn eine Änderung ansteht ...
     if writedb:
         for i in icallist:
+            # Wenn die Daten der vorherigen Woche in der Datenbank liegen bleiben soll, muss die Abfrage noch
+            # den Zeitraum überprüfen
             time_last_change = eventsave(room, i.dtstart, i.dtend, i.dtsummary)
             # print("Folgender Eintrag wurde gespeichert:")
             # print(i)

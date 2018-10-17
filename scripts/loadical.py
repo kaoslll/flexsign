@@ -10,6 +10,13 @@ Dieses Scipt führt man am besten über die Konsole aus.
 """
 
 
+class Icalevent:
+    def __init__(self, dtstart, dtend, dtsummary):
+        self.dtstart = dtstart
+        self.dtend = dtend
+        self.dtsummary = dtsummary
+
+
 def run():
     myroom = 'S042'
     print('Suche Raum ' + myroom + ' in der Datenbank.')
@@ -66,42 +73,45 @@ def readical(filename, room):
     file_path = os.path.join(temp_dir, filename)
 
     icsfile = open(file_path, 'rb')
+    print('Lese Datei')
     gcal = Calendar.from_ical(icsfile.read())
 
     time_last_change = None
+    icallist = []
+    writedb = False
 
+    # Schreibe alle Werte in eine Liste -> schließe Datei
+    print('Suche nach neuen Einträgen')
     for event in gcal.walk('vevent'):
         start = event.get('dtstart').dt
         summary = event.get('summary')
         end = event.get('dtend').dt
-        # timestamp = event.get('dtstamp').dt
-
-        print(start)
-        print(summary)
-        print(end)
-        # print(timestamp)
-        # print(' ')
-
-        eventcreate = searchevents(room, start, end, summary)
-
-        """
-        Hier muss jetzt eine geschickte Abfrage rein ob sich ein Termin geändert hat:
-            -> Wenn sich einer geändert hat, lösche alle zu Raum dazugehörigen Events und Speichere die Neuen.
-            -> Ein selectives Update ist leider bei flexiblen Zeiten nicht möglich.
-                -> Es besteht lediglich die Möglichkeit die alten Events zu sichern, wobei das wenig Sinn macht.
-        """
-
-        if eventcreate:
-            time_last_change = eventsave(room, start, end, summary)
-
-        print(' ')
-
-    if time_last_change:
-        print('speichere Eintrag in Raum')
-        room.dtchanged = time_last_change
-        room.save()
+        icallist.append(Icalevent(start, end, summary))
 
     icsfile.close()
+
+    # Überprüfe ob eine Änderung vorliegt
+    for i in icallist:
+        if searchevents(room, i.dtstart, i.dtend, i.dtsummary):
+            # lösche Datenbank einträge und beende Überprüfung
+            print('Neuer Eintrag gefunden')
+            Event.objects.filter(room=room).delete()
+            writedb = True
+            break
+
+    # Wenn eine Änderung ansteht ...
+    if writedb:
+        for i in icallist:
+            time_last_change = eventsave(room, i.dtstart, i.dtend, i.dtsummary)
+            # print("Folgender Eintrag wurde gespeichert:")
+            # print(i)
+
+        del icallist
+        print('Neue Einträge wurden geschrieben')
+        room.dtchanged = time_last_change
+        room.save()
+    else:
+        print('Es gibt keine Neuigkeiten')
 
 
 def searchevents(room, start, end, summary):
@@ -111,17 +121,17 @@ def searchevents(room, start, end, summary):
                                  dtend__exact=end)
 
     if not query:
-        print('Eintrag muss erstellt werden')
+        # print('Eintrag muss erstellt werden')
         return True
     else:
-        print('Eintrag existiert bereits')
+        # print('Eintrag existiert bereits')
         return False
 
 
 def eventsave(room, start, end, summary):
     act = Event(dtstart=start, dtend=end, summary=summary, room=room)
     act.save()
-    print('neues Event wurde angelegt')
+    # print('neues Event wurde angelegt')
     return getattr(act, 'dtcreated')
 
 

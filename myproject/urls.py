@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    # TODO: Genaue Struktur erstellen sobald Gesamtprojekt soweit funktioniert
     path('admin/', admin.site.urls),
-    path('', include('deviceadmin.urls')),
-    path('test/', include('webuntis.urls')),
+    # path('dev/', include('deviceadmin.urls')),
+    path('', include('webuntis.urls')),
 ]

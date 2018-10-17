@@ -1,81 +1,66 @@
-ul {list-style-type: none;}
-/* TODO: Fallback alternative noch einfügen für die Schriftart */
-body {font-family: Veranda, SansSerif;}
+* {
+    box-sizing: border-box;
+}
 
-/* Week header */
-.week {
-    padding: 70px 25px;
-    width: 100%;
-    background: #1abc9c;
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style the header */
+.header {
+  grid-area: header;
+  background-color: #f1f1f1;
+  padding: 30px;
+  text-align: center;
+  font-size: 30px;
+}
+
+/* The grid container */
+.grid-container {
+  display: grid;
+    grid-template-columns: 10% 80% 5%;
+  grid-template-areas:
+  'header header header header header header'
+  'left middle middle middle middle right'
+  'footer footer footer footer footer footer';
+  /* grid-column-gap: 10px; - if you want gap between the columns */
+}
+
+.left,
+.middle,
+.right  {
+    padding: 10px;
+    height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Style the left column */
+.left {
+    grid-area: left;
+    padding: 1px;
+    background-color: #f1f1f1;
+    border: 1px solid darkred;
+}
+
+/* Style the middle column */
+.middle {
+  grid-area: middle;
+    padding: 10px;
+    border: 1px solid red;
     text-align: center;
 }
 
-/* Week list */
-.week ul {
-    margin: 0;
-    padding: 0;
+/* Style the right column */
+.right {
+    grid-area: right;
+    padding: 1px;
+    background-color: #f1f1f1;
+    border: 1px solid darkred;
 }
 
-/* Week list item */
-.week ul li {
-    color: white;
-    font-size: 20px;
-    text-transform: uppercase;
-    letter-spacing: 3px;
+/* Style the footer */
+.footer {
+  grid-area: footer;
+  background-color: #f1f1f1;
+  padding: 10px;
+  text-align: center;
 }
-
-
-/* Pevious button inside week header */
-.week .prev {
-    float: left;
-    padding-top: 10px;
-}
-
-/* Next button inside week header */
-.week .next {
-    float: right;
-    padding-top: 10px;
-}
-
-
-/* Weekdays */
-.weekdays {
-    margin: 0;
-    padding: 10px 0;
-    background-color: #dddddd;
-}
-
-.weekdays .li {
-    display: inline-block;
-    width: 13.6%;
-    color: #666666;
-    text-align: center;
-}
-
-
-/* Days */
-.days {
-    padding: 10px 0;
-    background: #eeeeee;
-    margin: 0;
-}
-
-.days li {
-    list-style-type: none;
-    display: inline-block;
-    width: 13.6%;
-    text-align: center;
-    margin-bottom: 5px;
-    font-size: 12px;
-    color: #777777;
-}
-
-
-/* Highlight the "current" day */
-.days li .active {
-    padding: 5px;
-    background: #1abc9c;
-    color: white !important;
-}
-
-

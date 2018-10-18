@@ -6,61 +6,86 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Style the header */
-.header {
-  grid-area: header;
-  background-color: #f1f1f1;
-  padding: 30px;
-  text-align: center;
-  font-size: 30px;
-}
 
-/* The grid container */
+
 .grid-container {
-  display: grid;
-    grid-template-columns: 10% 80% 5%;
-  grid-template-areas:
-  'header header header header header header'
-  'left middle middle middle middle right'
-  'footer footer footer footer footer footer';
-  /* grid-column-gap: 10px; - if you want gap between the columns */
+    display: grid;
+    grid-template-columns: 12.5% 17% 17% 17% 17% 17% ;
+    grid-column-gap: 0.5vw;
+    grid-row-gap: 0.5vh;
+    background-color: #2196F3;
+    padding: 0.5vh 0.5vw;
+    height: 80vh;
 }
 
-.left,
-.middle,
-.right  {
-    padding: 10px;
-    height: 300px; /* Should be removed. Only for demonstration */
+.grid-container > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  /* font-size: 30px; */
 }
 
-/* Style the left column */
-.left {
-    grid-area: left;
-    padding: 1px;
-    background-color: #f1f1f1;
-    border: 1px solid darkred;
+.day {
+    color: #cc1111;
 }
 
-/* Style the middle column */
-.middle {
-  grid-area: middle;
-    padding: 10px;
-    border: 1px solid red;
-    text-align: center;
+.mo {
+    grid-column: 2 / 2;
+    grid-row: 2 / 9;
 }
 
-/* Style the right column */
-.right {
-    grid-area: right;
-    padding: 1px;
-    background-color: #f1f1f1;
-    border: 1px solid darkred;
+.di {
+    grid-column: 3 / 3;
+    grid-row: 2 / 9;
+}
+
+.mi {
+    grid-column: 4 / 4;
+    grid-row: 2 / 9;
+}
+
+.do {
+    grid-column: 5 / 5;
+    grid-row: 2 / 9;
+}
+
+.fr {
+    grid-column: 6 / 6;
+    grid-row: 2 / 9;
+}
+
+.time {
+    grid-column: 1 / 1;
+    color: green;
+}
+
+
+
+
+
+
+
+
+
+
+/* Style the top navigation bar */
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+    color: #ffffff;
+    padding: 1vh 20px;
+}
+
+
+/* Style the content */
+.content {
+    background-color: #ddd;
+    padding: 0.5vh 0.5vw;
 }
 
 /* Style the footer */
 .footer {
-  grid-area: footer;
-  background-color: #f1f1f1;
-  padding: 10px;
-  text-align: center;
+    background-color: #f1f1f1;
+    text-align: center;
+    padding: 1vh 0;
 }
+

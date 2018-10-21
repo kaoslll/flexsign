@@ -103,7 +103,8 @@ def readical(filename, room):
     # Schreibe alle Werte in eine Liste -> schließe Datei
     print('Suche nach neuen Einträgen')
     for event in gcal.walk('vevent'):
-        start = event.get('dtstart').dt
+        #  print(timezone.template_localtime(monday[0].dtstart, use_tz='Europe/Berlin'))
+        start = timezone.template_localtime(event.get('dtstart').dt, use_tz='Europe/Berlin')
         summary = event.get('summary')
         end = event.get('dtend').dt
         icallist.append(Icalevent(start, end, summary))

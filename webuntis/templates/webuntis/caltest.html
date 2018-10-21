@@ -1,4 +1,6 @@
 {% load static %}
+{% load tz %}
+
 <!DOCTYPE html>
 
 
@@ -25,9 +27,10 @@
 
 <div>
     {% for mo in monday %}
-        Montag {{ mo.dtstart.time }} - {{ mo.dtend.time }}: {{ mo.summary }}<br>
+        Montag {{ mo.dtstart|localtime|time }} - {{ mo.dtend|localtime|time }}: {{ mo.summary }}<br>
     {% endfor %}
 </div>
+
 
 
 <div class="content">

@@ -17,11 +17,12 @@ def run():
     friday = Event.objects.filter(room=roomsel,
                                   dtstart__day=get_day_of_actual_monday()+4)
 
-    print(monday)
-    print(thuesday)
-    print(wednesday)
-    print(thursday)
-    print(friday)
+    print(monday[0])
+    print(monday[0].dtstart)
+    print(monday[0].dtend)
+
+    # print(timezone.template_localtime(monday[0].dtstart, use_tz='Europe/Berlin'))
+
 
 
 def get_day_of_actual_monday():

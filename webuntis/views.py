@@ -9,4 +9,4 @@ def test(request):
 
 
 def cal(request):
-    return render(request, 'webuntis/cal.html', {})
+    return render(request, 'webuntis/caltest.html', {})

@@ -29,29 +29,48 @@ body {
 }
 
 .mo {
+	position: relative;
     grid-column: 2 / 2;
     grid-row: 2 / 9;
 }
 
 .di {
+	position: relative;
     grid-column: 3 / 3;
     grid-row: 2 / 9;
 }
 
 .mi {
+	position: relative;
     grid-column: 4 / 4;
     grid-row: 2 / 9;
 }
 
 .do {
+	position: relative;
     grid-column: 5 / 5;
     grid-row: 2 / 9;
 }
 
 .fr {
+	position: relative;
     grid-column: 6 / 6;
     grid-row: 2 / 9;
 }
+
+
+.event {
+	position: absolute;
+	background-color: #ddd;
+	border: 1px solid black;
+	border-radius: 3px;
+	text-align: center;
+	vertical-align: middle;
+	width: 98%;
+	margin: 1%;
+
+}
+
 
 .time {
     grid-column: 1 / 1;

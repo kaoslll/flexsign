@@ -14,6 +14,7 @@ Dieses Scipt führt man am besten über die Konsole aus.
 
 # TODO: Implementierung direkt im Hauptprojekt
 # TODO: Komplett eine Klasse erzeugen
+# TODO: Create /temp/ Directory if not exist
 
 class Icalevent:
     def __init__(self, dtstart, dtend, dtsummary):

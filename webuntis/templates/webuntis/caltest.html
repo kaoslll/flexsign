@@ -14,9 +14,21 @@
 
 
 <body>
+
+
 <div class="topnav">
-    <p>OTH Regensburg</p>
+
+    <p>OTH Regensburg  Raum: {{ roomsel.name }} </p>
+
 </div>
+
+
+<div>
+    {% for mo in monday %}
+        Montag {{ mo.dtstart.time }} - {{ mo.dtend.time }}: {{ mo.summary }}<br>
+    {% endfor %}
+</div>
+
 
 <div class="content">
 
